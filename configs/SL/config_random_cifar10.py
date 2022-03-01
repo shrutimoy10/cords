@@ -7,7 +7,7 @@ config = dict(setting="SL",
                            type="pre-defined"),
 
               dataloader=dict(shuffle=True,
-                              batch_size=20,
+                              batch_size=20, #previously 20
                               pin_memory=True),
 
               model=dict(architecture='ResNet18',
@@ -35,7 +35,7 @@ config = dict(setting="SL",
                                 select_every=20,
                                 kappa=0),
 
-              train_args=dict(num_epochs=300,
+              train_args=dict(num_epochs=10,   #300,
                               device="cuda",
                               print_every=10,
                               results_dir='results/',

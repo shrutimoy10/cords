@@ -12,7 +12,7 @@ from sklearn.datasets import load_boston
 import re
 import pandas as pd
 import torch
-import torchtext.data
+# import torchtext.data
 
 
 def clean_data(sentence):
