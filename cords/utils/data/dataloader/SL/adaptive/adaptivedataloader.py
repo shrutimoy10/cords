@@ -58,6 +58,7 @@ class AdaptiveDSSDataLoader(DSSDataLoader):
         self.subset_indices, self.subset_weights = self._resample_subset_indices()
         
         print("AdaptiveDataLoader, resample, epoch : ", self.cur_epoch)
+        # print("AdaptiveDataLoader, resample, 5")
         
         self.logger.debug("Subset indices length: %d", len(self.subset_indices))
         self._refresh_subset_loader()
