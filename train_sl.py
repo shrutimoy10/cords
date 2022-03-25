@@ -15,7 +15,7 @@ from cords.utils.data.dataloader.SL.adaptive import GLISTERDataLoader, OLRandomD
     CRAIGDataLoader, GradMatchDataLoader, RandomDataLoader
 from cords.utils.data.datasets.SL import gen_dataset
 from cords.utils.models import *
-
+from matplotlib import pyplot as plt
 
 class TrainClassifier:
     def __init__(self, config_file):
@@ -247,11 +247,15 @@ class TrainClassifier:
             """
             self.cfg.dss_args.device = self.cfg.train_args.device
             self.cfg.dss_args.num_epochs = self.cfg.train_args.num_epochs
+            
+            # print("train_sl, dataloader, 1")
 
             dataloader = RandomDataLoader(trainloader, self.cfg.dss_args, logger,
                                           batch_size=self.cfg.dataloader.batch_size,
                                           shuffle=self.cfg.dataloader.shuffle,
                                           pin_memory=self.cfg.dataloader.pin_memory)
+            
+            # print("train_sl, after dataloader, 4")
 
         elif self.cfg.dss_args.type == ['OLRandom', 'OLRandom-Warm']:
             """
@@ -296,7 +300,7 @@ class TrainClassifier:
                     trn_losses = load_metrics['trn_loss']
                 if arg == "trn_acc":
                     trn_acc = load_metrics['trn_acc']
-                if arg == "subtrn_loss":
+                if  arg == "subtrn_loss":
                     subtrn_losses = load_metrics['subtrn_loss']
                 if arg == "subtrn_acc":
                     subtrn_acc = load_metrics['subtrn_acc']
@@ -316,6 +320,9 @@ class TrainClassifier:
             model.train()
             start_time = time.time()
             for _, (inputs, targets, weights) in enumerate(dataloader):
+                # print("Count : ", _)
+                # print("Weights   : ", weights)
+                # print("Input shape : ", inputs.shape)
                 inputs = inputs.to(self.cfg.train_args.device)
                 targets = targets.to(self.cfg.train_args.device, non_blocking=True)
                 weights = weights.to(self.cfg.train_args.device)
@@ -448,6 +455,7 @@ class TrainClassifier:
 
                 logger.info(print_str)
 
+
             """
             ################################################# Checkpoint Saving #################################################
             """
@@ -487,6 +495,22 @@ class TrainClassifier:
                 # save checkpoint
                 self.save_ckpt(ckpt_state, checkpoint_path)
                 logger.info("Model checkpoint saved at epoch: %d".format(epoch + 1))
+
+
+        """
+        ############################################# Plotting the Losses####################################################
+        """
+            
+        plt.plot(trn_losses)
+        plt.plot(val_losses)
+        plt.show()
+        # plt.savefig("300_epoch_loss_leverage_score_top_100_every_20_batch.png")
+        # plt.savefig("300_epoch_loss_random_every_20_batch.png")
+        # plt.savefig("10_epoch_loss_hadamard_mat_every_1_batch.png")
+        plt.savefig("300_epoch_loss_normal_random_levscore_every_20_batch.png")
+
+
+
 
         """
         ################################################# Results Summary #################################################

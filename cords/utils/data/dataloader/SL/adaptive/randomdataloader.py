@@ -7,8 +7,12 @@ class RandomDataLoader(AdaptiveDSSDataLoader):
     def __init__(self, train_loader, dss_args, logger, *args, **kwargs):
         super(RandomDataLoader, self).__init__(train_loader, train_loader, dss_args, 
                                                     logger, *args, **kwargs)
+        
+        # print("RandomDataLoader, init, 2")
+        
         self.strategy = RandomStrategy(train_loader, online=False)
         self.logger.debug('Random dataloader initialized.')
+        
 
     def _resample_subset_indices(self):
         start = time.time()

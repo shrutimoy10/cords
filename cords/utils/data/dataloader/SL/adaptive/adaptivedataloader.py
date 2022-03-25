@@ -12,6 +12,8 @@ class AdaptiveDSSDataLoader(DSSDataLoader):
         self.train_loader = train_loader
         self.val_loader = val_loader
         
+        # print("AdaptiveDataLoader, init, 1.5")
+
         """
          Arguments assertion check
         """
@@ -54,6 +56,9 @@ class AdaptiveDSSDataLoader(DSSDataLoader):
 
     def resample(self):
         self.subset_indices, self.subset_weights = self._resample_subset_indices()
+        
+        print("AdaptiveDataLoader, resample, epoch : ", self.cur_epoch)
+        
         self.logger.debug("Subset indices length: %d", len(self.subset_indices))
         self._refresh_subset_loader()
         self.logger.debug("Subset loader initiated, args: %s, kwargs: %s", self.loader_args, self.loader_kwargs)
