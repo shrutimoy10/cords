@@ -56,7 +56,6 @@ class RandomStrategy(object):
         # leverage_scores = compute_leverage_scores(data, budget)
 
         # print("Total points : ", self.N_trn)
-<<<<<<< HEAD
         print("Budget : ", budget)
 
         # trainset = self.trainloader.sampler.data_source
@@ -113,33 +112,6 @@ class RandomStrategy(object):
 
         return leverage_scores
 
-=======
-        # print("Budget : ", budget)
-
-        # trainset = self.trainloader.sampler.data_source
-
-        
-
-        # print("Trainset dict : ", trainset[10000][0].shape)
-
-
-
-
-        if self.online or (self.indices is None):
-            np.random.seed()
-            self.indices = np.random.choice(self.N_trn, size=budget, replace=False)
-            # random_indices = np.random.choice(self.N_trn, size=2*budget, replace=False)
-            # self.indices = self.leverage_score_sampling(budget, random_indices)
-            # print("Num indices : ", len(self.indices))
-
-            # print("Data shape : ", data[self.indices,:].shape)
-
-            self.gammas = torch.ones(budget)
-            # self.gammas = self.compute_leverage_scores()
-        return self.indices, self.gammas
-
-    # Adding a function for computing the leverage scores
->>>>>>> ff8686775a540bb6f2d193fda4072584b7215454
     """ 
 
     Given the data matrix and a budget, this function computes the leverage scores of the samples
@@ -166,17 +138,12 @@ class RandomStrategy(object):
         Compute the leverage scores from the rows of U.
 
     Computing leverage scores using this algorithm requires access to the full
-<<<<<<< HEAD
     dataset, which is a technical problem for now. -- SOLVED
-=======
-    dataset, which is a technical problem for now.
->>>>>>> ff8686775a540bb6f2d193fda4072584b7215454
 
     Hence, for now, I will be computing the leverage scores of the randomly 
     sampled datasets. They are weighted as 1 for now, instead of that, lets see 
     what happens when we send the leverage scores as weights.
     """
-<<<<<<< HEAD
     def leverage_score_sampling(self, budget):
     
         N = 1024 # nearest power of 2 closest to 450
@@ -303,36 +270,10 @@ class RandomStrategy(object):
 
         # row_sum = np.sum(np.square(U[:,:top_k]),axis=1)
         row_sum = np.sum(np.abs(U[:,:top_k]),axis=1)
-=======
-    def compute_leverage_scores(self):
-
-        #extracting the rows from the trainloader
-        trainset = self.trainloader.sampler.data_source
-
-        #initializing size to be that of the first point
-        sampled_points = torch.empty((len(trainset[0][0].reshape(-1)),))
-
-        for idx in self.indices:
-            sampled_points = torch.vstack((sampled_points, trainset[idx][0].reshape(-1)))
-        
-        #purging the empty row from the tensor
-        sampled_points = sampled_points[1:,:]
-
-        print("Shape of sampled points : ", sampled_points.shape)
-
-
-
-
-        [U, S, V] = torch.linalg.svd(sampled_points)
-
-        row_sum = torch.sum(torch.square(U[:,:50]),axis=1)
-
->>>>>>> ff8686775a540bb6f2d193fda4072584b7215454
         beta = 1
 
         scores = beta * row_sum
 
-<<<<<<< HEAD
         leverage_scores = scores / np.sum(row_sum)
         
         # leverage_scores = np.sqrt(np.reciprocal(leverage_scores))
@@ -346,11 +287,4 @@ class RandomStrategy(object):
         leverage_weights = np.asarray(np.reciprocal(leverage_scores), dtype = np.int)
 
         return sampled_indices, leverage_weights
-=======
-        leverage_scores = scores / torch.sum(row_sum)
-
-        print("Leverage scores length : ", len(leverage_scores))
-
-        return leverage_scores
->>>>>>> ff8686775a540bb6f2d193fda4072584b7215454
 

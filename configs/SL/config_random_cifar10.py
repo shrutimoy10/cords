@@ -35,11 +35,8 @@ config = dict(setting="SL",
                                 select_every=20,
                                 kappa=0),
 
-<<<<<<< HEAD
               train_args=dict(num_epochs=300,   #300,
-=======
               train_args=dict(num_epochs=10,   #300,
->>>>>>> ff8686775a540bb6f2d193fda4072584b7215454
                               device="cuda",
                               print_every=10,
                               results_dir='results/',
